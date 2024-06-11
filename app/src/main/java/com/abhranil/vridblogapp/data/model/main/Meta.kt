@@ -10,6 +10,6 @@ data class Meta(
     val jetpack_post_was_ever_published: Boolean,
     val jetpack_publicize_feature_enabled: Boolean,
     val jetpack_publicize_message: String,
-    val jetpack_social_options: com.abhranil.vridblogapp.data.model.main.JetpackSocialOptions,
+    val jetpack_social_options: JetpackSocialOptions,
     val jetpack_social_post_already_shared: Boolean
 )
