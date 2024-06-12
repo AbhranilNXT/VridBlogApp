@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.abhranil.vridblogapp.view.screens.BlogPagesScreen
 import com.abhranil.vridblogapp.view.screens.DetailsScreen
 import com.abhranil.vridblogapp.view.screens.HomeScreen
 
@@ -32,6 +33,22 @@ fun VridBlogNavigation() {
                 if(it != null) {
                     Log.d("BlogID", it.toString())
                     DetailsScreen(navController = navController, blogID = it)
+                }
+            }
+        }
+
+        val blogPages = VridBlogScreens.BlogPagesScreen.route
+        composable("$blogPages/{pageNum}",
+            arguments = listOf(
+                navArgument(name = "pageNum") {
+                    type = NavType.IntType
+                }
+            )
+        ) {navBackStackEntry ->
+            navBackStackEntry.arguments?.getInt("pageNum").let {
+                if(it != null) {
+                    Log.d("BlogID", it.toString())
+                    BlogPagesScreen(navController = navController, pageNum = it)
                 }
             }
         }

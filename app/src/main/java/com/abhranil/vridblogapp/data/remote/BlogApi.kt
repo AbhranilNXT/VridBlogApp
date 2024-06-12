@@ -14,7 +14,7 @@ interface BlogApi {
     suspend fun getBlog(
         @Query("per_page") per_page: String,
         @Query("page") page: String
-    ): Response<com.abhranil.vridblogapp.data.model.main.VridBlogData>
+    ): Response<VridBlogData>
 
     @GET("posts/{blogID}")
     suspend fun getBlogDetails(@Path("blogID") blogID: Int) :Response<BlogDetails>

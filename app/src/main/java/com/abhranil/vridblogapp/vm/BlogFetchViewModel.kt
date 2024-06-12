@@ -4,10 +4,15 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.abhranil.vridblogapp.data.model.main.VridBlogData
+import com.abhranil.vridblogapp.data.model.main.VridBlogDataItem
 import com.abhranil.vridblogapp.data.repo.BlogRepository
 import com.abhranil.vridblogapp.data.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BlogFetchViewModel @Inject constructor(private val repository: BlogRepository) : ViewModel() {
 
-    private val _blogs: MutableStateFlow<UiState<com.abhranil.vridblogapp.data.model.main.VridBlogData>> = MutableStateFlow(UiState.Idle)
+    private val _blogs: MutableStateFlow<UiState<VridBlogData>> = MutableStateFlow(UiState.Idle)
     val blogs = _blogs.asStateFlow()
 
     fun loadBlogs(page : String) {

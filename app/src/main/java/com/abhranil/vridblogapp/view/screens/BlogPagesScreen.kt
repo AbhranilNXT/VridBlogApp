@@ -28,31 +28,37 @@ import com.abhranil.vridblogapp.view.navigation.VridBlogScreens
 import com.abhranil.vridblogapp.vm.BlogFetchViewModel
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: BlogFetchViewModel = hiltViewModel()) {
+fun BlogPagesScreen(navController: NavController,
+                    viewModel: BlogFetchViewModel = hiltViewModel(),
+                    pageNum: Int = 2) {
+    var page = pageNum
     Scaffold(topBar = {
-        BlogAppBar(title = "Vrid Blog App",
-            isHomeScreen = true,
-            navController = navController)
+        BlogAppBar(title = "Page $pageNum",
+            isHomeScreen = false,
+            navController = navController) {
+            navController.navigate(VridBlogScreens.HomeScreen.route)
+        }
     }) {
-        paddingValues ->
+            paddingValues ->
         Surface(modifier = Modifier
             .padding(paddingValues)
             .fillMaxWidth()
             .fillMaxHeight()) {
             Column(verticalArrangement = Arrangement.SpaceBetween) {
                 val blogs =viewModel.blogs.collectAsState().value
-                var pageNum = 1
                 when(blogs)
                 {
                     is UiState.Idle -> {
-                        viewModel.loadBlogs(page = 1.toString())
+                        viewModel.loadBlogs(page = page.toString())
                     }
                     is UiState.Loading -> {
 //                        CircularProgressIndicator()
                     }
                     is UiState.Success -> {
                         val listOfBlogs = blogs.data
-                        LazyColumn(modifier = Modifier.fillMaxSize().weight(1f),
+                        LazyColumn(modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f),
                             contentPadding = PaddingValues(start = 32.dp, end = 32.dp, bottom = 56.dp)
                         ) {
                             items(listOfBlogs.size) {
@@ -61,20 +67,42 @@ fun HomeScreen(navController: NavController, viewModel: BlogFetchViewModel = hil
                         }
                         Row(modifier = Modifier.padding(8.dp),
                             horizontalArrangement = Arrangement.SpaceBetween) {
+                            if(page>2){
+                                Text(text = "<- Previous Page",
+                                    color = Color.White,
+                                    modifier = Modifier.clickable {
+                                        page-=1
+                                        navController.navigate(VridBlogScreens.BlogPagesScreen.route+"/$page")
+                                    }
+                                )
+                            }
+                            else {
+                                Text(text = "<- Previous Page",
+                                    color = Color.White,
+                                    modifier = Modifier.clickable {
+                                        navController.navigate(VridBlogScreens.HomeScreen.route)
+                                    }
+                                )
+                            }
                             Spacer(modifier = Modifier.weight(1f))
                             Text(text = "Next Page ->",
                                 color = Color.White,
                                 modifier = Modifier.clickable {
-                                    pageNum+=1
-                                    navController.navigate(VridBlogScreens.BlogPagesScreen.route+"/$pageNum")
+                                    page+=1
+                                    navController.navigate(VridBlogScreens.BlogPagesScreen.route+"/$page")
                                 }
                             )
                         }
                     }
-                    else -> {}
+                    else -> {
+                        Text(text = "Something went wrong")
+                        Text(text = "Go back to Main Screen",
+                            Modifier.clickable {
+                                navController.navigate(VridBlogScreens.HomeScreen.route)
+                            })
+                    }
 
                 }
-
             }
         }
     }
