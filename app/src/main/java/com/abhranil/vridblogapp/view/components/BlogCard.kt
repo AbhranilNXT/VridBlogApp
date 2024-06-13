@@ -1,5 +1,6 @@
 package com.abhranil.vridblogapp.view.components
 
+import android.text.Html
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -46,7 +47,8 @@ fun BlogCard(blogDataItem: VridBlogDataItem, navController: NavController) {
                 .padding(start = 6.dp, end = 4.dp, top = 4.dp, bottom = 4.dp))
         }
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = blogDataItem.title.rendered, fontWeight = FontWeight.SemiBold)
+            val titleUnescape = Html.fromHtml(blogDataItem.title.rendered, Html.FROM_HTML_MODE_LEGACY).toString()
+            Text(text = titleUnescape, fontWeight = FontWeight.SemiBold)
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = "Date: ${blogDataItem.date.substring(0,10)}")
         }
