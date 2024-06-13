@@ -1,43 +1,41 @@
 package com.abhranil.vridblogapp.vm
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.abhranil.vridblogapp.data.model.main.VridBlogData
+import androidx.paging.cachedIn
 import com.abhranil.vridblogapp.data.model.main.VridBlogDataItem
-import com.abhranil.vridblogapp.data.repo.BlogRepository
-import com.abhranil.vridblogapp.data.utils.UiState
+import com.abhranil.vridblogapp.data.remote.BlogPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BlogFetchViewModel @Inject constructor(private val repository: BlogRepository) : ViewModel() {
+class BlogFetchViewModel @Inject constructor(
+    private val blogsPagingSource: BlogPagingSource
+) : ViewModel() {
 
-    private val _blogs: MutableStateFlow<UiState<VridBlogData>> = MutableStateFlow(UiState.Idle)
-    val blogs = _blogs.asStateFlow()
+    private val _blogResponse: MutableStateFlow<PagingData<VridBlogDataItem>> =
+        MutableStateFlow(PagingData.empty())
+    var blogResponse = _blogResponse.asStateFlow()
+        private set
 
-    fun loadBlogs(page : String) {
-        fetchBlogs(page)
-    }
-
-    private fun fetchBlogs(page : String) {
-        _blogs.value = UiState.Loading
-
+    init {
         viewModelScope.launch {
-            try {
-                _blogs.value = repository.getBlogs(page = page)
-            }
-            catch (e: Exception) {
-                Log.e("BlogFetchViewModel", e.message.toString())
+            Pager(
+                config = PagingConfig(
+                    10, enablePlaceholders = true
+                )
+            ) {
+                blogsPagingSource
+            }.flow.cachedIn(viewModelScope).collect {
+                _blogResponse.value = it
             }
         }
     }
+
 }

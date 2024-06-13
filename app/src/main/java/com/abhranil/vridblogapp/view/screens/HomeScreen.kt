@@ -1,11 +1,9 @@
 package com.abhranil.vridblogapp.view.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,16 +13,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.abhranil.vridblogapp.data.utils.UiState
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.abhranil.vridblogapp.view.components.BlogAppBar
 import com.abhranil.vridblogapp.view.components.BlogCard
-import com.abhranil.vridblogapp.view.navigation.VridBlogScreens
 import com.abhranil.vridblogapp.vm.BlogFetchViewModel
 
 @Composable
@@ -40,38 +37,38 @@ fun HomeScreen(navController: NavController, viewModel: BlogFetchViewModel = hil
             .fillMaxWidth()
             .fillMaxHeight()) {
             Column(verticalArrangement = Arrangement.SpaceBetween) {
-                val blogs =viewModel.blogs.collectAsState().value
-                var pageNum = 1
-                when(blogs)
-                {
-                    is UiState.Idle -> {
-                        viewModel.loadBlogs(page = 1.toString())
+                val blogs =viewModel.blogResponse.collectAsLazyPagingItems()
+                LazyColumn(modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                    contentPadding = PaddingValues(start = 32.dp, end = 32.dp, bottom = 56.dp)
+                ) {
+                    items(blogs.itemCount) {
+                        BlogCard(blogDataItem = blogs[it]!!, navController = navController)
                     }
-                    is UiState.Loading -> {
-//                        CircularProgressIndicator()
-                    }
-                    is UiState.Success -> {
-                        val listOfBlogs = blogs.data
-                        LazyColumn(modifier = Modifier.fillMaxSize().weight(1f),
-                            contentPadding = PaddingValues(start = 32.dp, end = 32.dp, bottom = 56.dp)
-                        ) {
-                            items(listOfBlogs.size) {
-                                BlogCard(blogDataItem = listOfBlogs[it], navController = navController)
+                    blogs.apply {
+                        when {
+                            loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
+                                item {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(text = "Loading")
+                                    }
+                                }
+                            }
+
+                            loadState.refresh is LoadState.Error || loadState.append is LoadState.Error -> {
+                                item {
+                                    Text(text = "Error")
+                                }
+                            }
+
+                            loadState.refresh is LoadState.NotLoading -> {
                             }
                         }
-                        Row(modifier = Modifier.padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween) {
-                            Spacer(modifier = Modifier.weight(1f))
-                            Text(text = "Next Page ➡️",
-                                modifier = Modifier.clickable {
-                                    pageNum+=1
-                                    navController.navigate(VridBlogScreens.BlogPagesScreen.route+"/$pageNum")
-                                }
-                            )
-                        }
                     }
-                    else -> {}
-
                 }
 
             }
