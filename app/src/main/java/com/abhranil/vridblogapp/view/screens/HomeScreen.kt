@@ -28,6 +28,7 @@ import com.abhranil.vridblogapp.view.components.BlogCard
 import com.abhranil.vridblogapp.vm.BlogFetchViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
@@ -45,7 +46,8 @@ fun HomeScreen(navController: NavController, viewModel: BlogFetchViewModel = hil
             Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally) {
                 val blogs =viewModel.blogResponse.collectAsLazyPagingItems()
-                val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_anim))
+                val loadingAnimComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_anim))
+                val noInternetAnimComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.no_internet_animation))
                 LazyColumn(modifier = Modifier
                     .fillMaxSize()
                     .weight(1f),
@@ -63,9 +65,10 @@ fun HomeScreen(navController: NavController, viewModel: BlogFetchViewModel = hil
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         verticalArrangement = Arrangement.Center
                                     ) {
-                                        LottieAnimation(composition = composition,
+                                        LottieAnimation(composition = loadingAnimComposition,
                                             modifier = Modifier.size(128.dp),
-                                            contentScale = ContentScale.Fit)
+                                            contentScale = ContentScale.Fit,
+                                            iterations = LottieConstants.IterateForever)
                                     }
                                 }
                             }
@@ -77,6 +80,18 @@ fun HomeScreen(navController: NavController, viewModel: BlogFetchViewModel = hil
                             }
 
                             loadState.refresh is LoadState.NotLoading -> {
+                                item {
+                                    Column(
+                                        modifier = Modifier.fillMaxHeight().fillMaxWidth(),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        LottieAnimation(composition = noInternetAnimComposition,
+                                            modifier = Modifier.size(128.dp),
+                                            contentScale = ContentScale.Fit,
+                                            iterations = LottieConstants.IterateForever)
+                                    }
+                                }
                             }
                         }
                     }

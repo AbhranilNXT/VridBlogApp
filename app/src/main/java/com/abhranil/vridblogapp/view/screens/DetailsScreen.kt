@@ -26,6 +26,7 @@ import com.abhranil.vridblogapp.view.components.BlogAppBar
 import com.abhranil.vridblogapp.vm.BlogDetailsViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
@@ -58,7 +59,8 @@ fun DetailsScreen(navController: NavController,
                     ) {
                         LottieAnimation(composition = composition,
                             modifier = Modifier.size(128.dp),
-                            contentScale = ContentScale.Fit)
+                            contentScale = ContentScale.Fit,
+                            iterations = LottieConstants.IterateForever)
                     }
                 }
                 is UiState.Success -> {
