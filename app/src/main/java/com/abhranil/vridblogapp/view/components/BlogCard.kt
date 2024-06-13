@@ -2,9 +2,7 @@ package com.abhranil.vridblogapp.view.components
 
 import android.util.Log
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,9 +14,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -34,32 +30,25 @@ fun BlogCard(blogDataItem: VridBlogDataItem, navController: NavController) {
                 navController.navigate(VridBlogScreens.DetailsScreen.route + "/${blogDataItem.id}")
             }
             .fillMaxWidth()
-            .height(240.dp)
             .padding(8.dp),
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
-        Row(
-            modifier = Modifier.padding(4.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            val imgUrl = if(!blogDataItem.jetpack_featured_media_url.isNullOrEmpty())
+        val imgUrl = if(!blogDataItem.jetpack_featured_media_url.isNullOrEmpty())
                 blogDataItem.jetpack_featured_media_url
             else "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"
+        Surface(modifier = Modifier.padding(8.dp),
+            shape = RoundedCornerShape(25.dp)) {
 
-            Surface(shape = RoundedCornerShape(25.dp)) {
-
-                ShimmerImage(imgUrl = imgUrl, modifier = Modifier
-                    .fillMaxWidth(0.55f)
-                    .fillMaxHeight()
-                    .padding(start = 6.dp, end = 4.dp, top = 4.dp, bottom = 4.dp))
-            }
-
-            Column(verticalArrangement = Arrangement.Center) {
-                Text(text = blogDataItem.title.rendered, fontWeight = FontWeight.SemiBold)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Date: ${blogDataItem.date.substring(0,10)}")
-            }
+            ShimmerImage(imgUrl = imgUrl, modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(start = 6.dp, end = 4.dp, top = 4.dp, bottom = 4.dp))
+        }
+        Column(modifier = Modifier.padding(8.dp)) {
+            Text(text = blogDataItem.title.rendered, fontWeight = FontWeight.SemiBold)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Date: ${blogDataItem.date.substring(0,10)}")
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.abhranil.vridblogapp.view.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -50,7 +49,7 @@ fun HomeScreen(navController: NavController, viewModel: BlogFetchViewModel = hil
                 LazyColumn(modifier = Modifier
                     .fillMaxSize()
                     .weight(1f),
-                    contentPadding = PaddingValues(start = 32.dp, end = 32.dp, bottom = 56.dp)
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 24.dp)
                 ) {
                     items(blogs.itemCount) {
                         BlogCard(blogDataItem = blogs[it]!!, navController = navController)
