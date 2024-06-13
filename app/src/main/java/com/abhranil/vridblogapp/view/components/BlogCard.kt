@@ -2,6 +2,7 @@ package com.abhranil.vridblogapp.view.components
 
 import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +26,7 @@ import com.abhranil.vridblogapp.data.model.main.VridBlogDataItem
 import com.abhranil.vridblogapp.view.navigation.VridBlogScreens
 
 @Composable
-fun BlogCard(blogDataItem: com.abhranil.vridblogapp.data.model.main.VridBlogDataItem, navController: NavController) {
+fun BlogCard(blogDataItem: VridBlogDataItem, navController: NavController) {
     OutlinedCard(
         modifier = Modifier
             .clickable {
@@ -32,7 +34,7 @@ fun BlogCard(blogDataItem: com.abhranil.vridblogapp.data.model.main.VridBlogData
                 navController.navigate(VridBlogScreens.DetailsScreen.route + "/${blogDataItem.id}")
             }
             .fillMaxWidth()
-            .height(196.dp)
+            .height(240.dp)
             .padding(8.dp),
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(8.dp)
@@ -45,14 +47,17 @@ fun BlogCard(blogDataItem: com.abhranil.vridblogapp.data.model.main.VridBlogData
                 blogDataItem.jetpack_featured_media_url
             else "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"
 
-            ShimmerImage(imgUrl = imgUrl, modifier = Modifier
-                .fillMaxWidth(0.35f)
-                .fillMaxHeight()
-                .padding(start = 6.dp, end = 4.dp, top = 4.dp, bottom = 4.dp))
+            Surface(shape = RoundedCornerShape(25.dp)) {
 
-            Column {
+                ShimmerImage(imgUrl = imgUrl, modifier = Modifier
+                    .fillMaxWidth(0.55f)
+                    .fillMaxHeight()
+                    .padding(start = 6.dp, end = 4.dp, top = 4.dp, bottom = 4.dp))
+            }
+
+            Column(verticalArrangement = Arrangement.Center) {
                 Text(text = blogDataItem.title.rendered, fontWeight = FontWeight.SemiBold)
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Date: ${blogDataItem.date.substring(0,10)}")
             }
         }

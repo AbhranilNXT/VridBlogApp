@@ -65,11 +65,10 @@ fun BlogPagesScreen(navController: NavController,
                                 BlogCard(blogDataItem = listOfBlogs[it], navController = navController)
                             }
                         }
-                        Row(modifier = Modifier.padding(8.dp),
+                        Row(modifier = Modifier.padding(16.dp),
                             horizontalArrangement = Arrangement.SpaceBetween) {
                             if(page>2){
-                                Text(text = "<- Previous Page",
-                                    color = Color.White,
+                                Text(text = "⬅️ Previous Page",
                                     modifier = Modifier.clickable {
                                         page-=1
                                         navController.navigate(VridBlogScreens.BlogPagesScreen.route+"/$page")
@@ -77,16 +76,14 @@ fun BlogPagesScreen(navController: NavController,
                                 )
                             }
                             else {
-                                Text(text = "<- Previous Page",
-                                    color = Color.White,
+                                Text(text = "⬅️ Previous Page",
                                     modifier = Modifier.clickable {
                                         navController.navigate(VridBlogScreens.HomeScreen.route)
                                     }
                                 )
                             }
                             Spacer(modifier = Modifier.weight(1f))
-                            Text(text = "Next Page ->",
-                                color = Color.White,
+                            Text(text = "Next Page ➡️",
                                 modifier = Modifier.clickable {
                                     page+=1
                                     navController.navigate(VridBlogScreens.BlogPagesScreen.route+"/$page")

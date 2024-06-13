@@ -59,11 +59,10 @@ fun HomeScreen(navController: NavController, viewModel: BlogFetchViewModel = hil
                                 BlogCard(blogDataItem = listOfBlogs[it], navController = navController)
                             }
                         }
-                        Row(modifier = Modifier.padding(8.dp),
+                        Row(modifier = Modifier.padding(16.dp),
                             horizontalArrangement = Arrangement.SpaceBetween) {
                             Spacer(modifier = Modifier.weight(1f))
-                            Text(text = "Next Page ->",
-                                color = Color.White,
+                            Text(text = "Next Page ➡️",
                                 modifier = Modifier.clickable {
                                     pageNum+=1
                                     navController.navigate(VridBlogScreens.BlogPagesScreen.route+"/$pageNum")
