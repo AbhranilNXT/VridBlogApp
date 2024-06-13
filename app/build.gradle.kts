@@ -110,4 +110,8 @@ dependencies {
     val paging_version = "3.3.0"
     implementation("androidx.paging:paging-runtime:$paging_version")
     implementation("androidx.paging:paging-compose:3.3.0")
+
+    //Lottie
+    val lottieVersion = "6.4.0"
+    implementation("com.airbnb.android:lottie-compose:$lottieVersion")
 }

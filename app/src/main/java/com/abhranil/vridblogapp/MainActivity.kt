@@ -43,11 +43,3 @@ fun VridBlogApp() {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    VridBlogAppTheme {
-        VridBlogApp()
-    }
-}

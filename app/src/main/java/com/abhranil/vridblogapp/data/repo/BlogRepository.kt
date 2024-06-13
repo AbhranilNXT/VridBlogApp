@@ -9,7 +9,14 @@ import javax.inject.Inject
 class BlogRepository @Inject constructor(private val api: BlogApi) {
     suspend fun getBlogs(
         page: Int
-    ): List<VridBlogDataItem> = api.getBlog(per_page = "10", page = page.toString())
+    ): List<VridBlogDataItem>{
+        return try {
+            api.getBlog(per_page = "10", page = page.toString())
+        }
+        catch (e: Exception){
+            emptyList()
+        }
+    }
 
     suspend fun getBlogDetails(id: Int) : UiState<BlogDetails> {
         val response = api.getBlogDetails(blogID = id)
