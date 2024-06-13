@@ -38,15 +38,13 @@ fun BlogCard(blogDataItem: VridBlogDataItem, navController: NavController) {
         val imgUrl = if(!blogDataItem.jetpack_featured_media_url.isNullOrEmpty())
                 blogDataItem.jetpack_featured_media_url
             else "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"
-        Surface(modifier = Modifier.padding(8.dp),
-            shape = RoundedCornerShape(25.dp)) {
-
+        Surface(modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 8.dp),
+            shape = RoundedCornerShape(20.dp)) {
             ShimmerImage(imgUrl = imgUrl, modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(start = 6.dp, end = 4.dp, top = 4.dp, bottom = 4.dp))
+                .fillMaxHeight())
         }
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 16.dp)) {
             val titleUnescape = Html.fromHtml(blogDataItem.title.rendered, Html.FROM_HTML_MODE_LEGACY).toString()
             Text(text = titleUnescape, fontWeight = FontWeight.SemiBold)
             Spacer(modifier = Modifier.height(8.dp))
